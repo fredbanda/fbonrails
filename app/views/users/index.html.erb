@@ -1,0 +1,43 @@
+All Users Count: 
+<%= @users.count %>
+
+<div class="table-responsive">
+<table class="table table-striped table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>UserID</th>
+            <th>Email</th>
+            <th>Confirmed</th>
+            <th>Name</th>
+            <th>Image</th>
+            <th>Roles</th>
+        <th colspan="3"></th>
+    </tr>
+</thead>
+
+<tbody>
+<% @users.each do |user| %>
+    <tr>
+        <td><%= link_to user.id, user_path(user), class: "text-decoration-none" %></td>
+        <td><%= user %></td>
+        <td><%= boolean_label(user.confirmed?) %></td>
+        <td><%= user.name %></td>
+        <td>
+        <% if user.image.present? %>
+        <%= image_tag user.image, size: '30x30', class: "rounded-circle" %>
+        <% end %>
+        </td>
+        <td><%= user.active_roles.join(" , ") %></td>
+        <td>
+        <div class="btn-group">
+        <%= link_to "Edit User", edit_user_path(user), class: "btn btn-sm btn-warning mx-2 rounded" %>
+                <% if current_user.admin? %>
+        <%= link_to 'Delete User', user, method: :delete, form: { data: { turbo_confirm: 'Are you sure?' } }, class: "btn btn-sm btn-danger rounded" %>
+        </div>
+        <% end %>
+        </td>
+        </tr>
+        <% end %>
+    </tbody>
+</table>
+</div>
